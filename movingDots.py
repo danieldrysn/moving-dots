@@ -16,25 +16,25 @@ dot_space = np.zeros(dim)
 
 win_name = 'Dot Space'
 cv2.namedWindow(win_name,cv2.WINDOW_AUTOSIZE)
-num = 100
+num = 50
 
 init_dot = (dim/2).astype(int)
 mdots = [dot.Dot(init_dot, dim) for i in range(num)]
 for i, mdot in enumerate(mdots):
-    for k in range(i + 1):
-        mdot.moveDot(moveType=2,step=50)
+    for k in range(i%10+1):
+        mdot.moveDot(moveType=1,step=1)
 
 while (True):
 
     for i, mdot in enumerate(mdots):
-        if mdot.moveDot(moveType=2,step=3):
+        if mdot.moveDot(moveType=1,step=1):
             dot_space[tuple(mdot.curr_dot)] = 256
             dot_space[tuple(mdot.prev_dot)] = 0
         else:
             dot_space[tuple(mdot.prev_dot)] = 0
             mdot.curr_dot = init_dot
             mdot.dot_dir = np.random.rand() * 360
-            for k in range(i+1):
+            for k in range(i%10+1):
                 mdot.moveDot()
 
     cv2.imshow(win_name, dot_space)
