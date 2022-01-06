@@ -12,7 +12,7 @@ import cv2
 import dot
 
 dim = np.array([600,600])
-dot_space = np.zeros(dim)
+dot_space = np.zeros([600,600,3], dtype="uint8")
 
 win_name = 'Dot Space'
 cv2.namedWindow(win_name,cv2.WINDOW_AUTOSIZE)
@@ -28,7 +28,7 @@ while (True):
 
     for i, mdot in enumerate(mdots):
         if mdot.moveDot(moveType=1,step=1):
-            dot_space[tuple(mdot.curr_dot)] = 256
+            dot_space[tuple(mdot.curr_dot)] = mdot.color
             dot_space[tuple(mdot.prev_dot)] = 0
         else:
             dot_space[tuple(mdot.prev_dot)] = 0
