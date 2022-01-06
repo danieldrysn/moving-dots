@@ -19,6 +19,7 @@ class Dot:
     history = []
 
     def __init__(self, init_dot, dim):
+        self.color = np.array([np.random.rand() * 256,np.random.rand() * 256,np.random.rand() * 256])
         self.dot_dir = np.random.rand() * 360
         self.curr_dot = init_dot
         self.dim = dim
