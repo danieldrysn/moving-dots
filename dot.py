@@ -15,10 +15,12 @@ class Dot:
     def __init__(self, init_dot, dim):
         self.history = None
         self.step = 1
+        self.init_dot = init_dot
         self.color = np.array([np.random.rand() * 256,np.random.rand() * 256,np.random.rand() * 256])
         self.dot_dir = np.random.rand() * 360
         self.curr_dot = init_dot
         self.dim = dim
+        self.thickness = 1
 
     def setTranslation(self, translation):
         self.curr_dot = translation
@@ -28,10 +30,8 @@ class Dot:
 
     def moveDot(self, moveType = 1):
         self.prev_dot = self.curr_dot
-        if moveType == 1:
-            self.curr_dot = self.lineMovement(self.step)
-        else:
-            self.curr_dot = self.randomMovement(self.step)
+        if moveType == 1: self.curr_dot = self.lineMovement(self.step)
+        if moveType == 2: self.curr_dot = self.randomMovement(self.step)
         return self.testBoundary()
 
     def lineMovement(self,step=1):
