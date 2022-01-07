@@ -12,26 +12,23 @@ import numpy as np
 import math
 
 class Dot:
+    dot_dir = 0.0
+    prev_dot = np.array([0,0])
+    curr_dot = np.array([0,0])
+    dim = np.array([0,0])
+    history = []
+
     def __init__(self, init_dot, dim):
-        self.history = None
-        self.step = 1
-        self.color = np.array([np.random.rand() * 256,np.random.rand() * 256,np.random.rand() * 256])
         self.dot_dir = np.random.rand() * 360
         self.curr_dot = init_dot
         self.dim = dim
 
-    def setTranslation(self, translation):
-        self.curr_dot = translation
-
-    def setStep(self, step):
-        self.step = step
-
-    def moveDot(self, moveType = 1):
+    def moveDot(self, moveType = 1, step=2):
         self.prev_dot = self.curr_dot
         if moveType == 1:
-            self.curr_dot = self.lineMovement(self.step)
+            self.curr_dot = self.lineMovement(step)
         else:
-            self.curr_dot = self.randomMovement(self.step)
+            self.curr_dot = self.randomMovement(step)
         return self.testBoundary()
 
     def lineMovement(self,step=1):
@@ -55,7 +52,7 @@ class Dot:
             self.curr_dot = self.prev_dot
             return False
 
-    def printDotInfo(self, i):
+    def printDotness(self, i):
         print(f'i={i}, angle={self.dot_dir:3.2f}, prev={self.prev_dot}, curr={self.curr_dot}')
 
 

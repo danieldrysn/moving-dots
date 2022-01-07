@@ -12,7 +12,7 @@ import cv2
 import dot
 
 dim = np.array([600,600])
-dot_space = np.zeros([600,600,3], dtype="uint8")
+dot_space = np.zeros(dim)
 
 win_name = 'Dot Space'
 cv2.namedWindow(win_name,cv2.WINDOW_AUTOSIZE)
@@ -21,28 +21,29 @@ num = 100
 init_dot = (dim/2).astype(int)
 mdots = [dot.Dot(init_dot, dim) for i in range(num)]
 for i, mdot in enumerate(mdots):
-    for k in range(i%10+1):
-        translation = np.array([int(np.random.rand()*dim[0]),int(np.random.rand()*dim[1])])
-        step = np.random.rand()*10
-        mdot.setStep(step)
-        mdot.setTranslation(translation)
-        mdot.moveDot(moveType=1)
+    for k in range(i + 1):
+        mdot.moveDot(moveType=2,step=50)
 
 while (True):
 
     for i, mdot in enumerate(mdots):
-        if mdot.moveDot(moveType=1):
-            dot_space[tuple(mdot.curr_dot)] = mdot.color
+        if mdot.moveDot(moveType=2,step=3):
+            dot_space[tuple(mdot.curr_dot)] = 256
+            #history = mdot.dotHistory(mdot.curr_dot,10)
+            #for j in range(len(history)):
+            #    dot_space[tuple(history[j])] = 256
+                #print(len(history))
+            #if len(history) == 10:
+                #print('reset')
+                #dot_space[tuple(history[0])] = 0
+                #dot_space[tuple(history[1])] = 0
+            #dot_space[tuple(history[len(history)-1])] = 0
             dot_space[tuple(mdot.prev_dot)] = 0
         else:
-            dot_space[tuple(mdot.prev_dot)] = 0
+            #dot_space[tuple(mdot.prev_dot)] = 0
             mdot.curr_dot = init_dot
-            translation = np.array([int(np.random.rand() * dim[0]), int(np.random.rand() * dim[1])])
-            mdot.setTranslation(translation)
-            step = np.random.rand() * 10
-            mdot.setStep(step)
             mdot.dot_dir = np.random.rand() * 360
-            for k in range(i%10+1):
+            for k in range(i+1):
                 mdot.moveDot()
 
     cv2.imshow(win_name, dot_space)
